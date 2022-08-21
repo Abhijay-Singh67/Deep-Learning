@@ -1,59 +1,55 @@
-from metrics import *
 import random as r
-
+from metrics import *
+#Base clases
 class Nueron:
-    def __init__(self,prevLayerLength,nueronIdentityNumber,output):
+    def __init__(self,prevLayerLength,activationFunction,identityNumber):
+        self.bias = r.uniform(0,1)
         self.weights = []
-        self.identity = nueronIdentityNumber
         for a in range(prevLayerLength):
             self.weights.append(r.uniform(0,1))
-        self.bias = r.uniform(0,1)
-        self.isoutput = output
+        self.activationFunction = activationFunction
+        self.identity = identityNumber
     
-    #during forward propogation
-    def calculate(self,prevLayerOutputs):
+    #forward propogation
+    def calculate(self,prevLayerOutput):
         output = 0
-        for b in range(len(prevLayerOutputs)):
-            output += prevLayerOutputs[b]*self.weights[b]
+        for b in range(len(self.weights)):
+            for p in range(len(prevLayerOutput)):
+                output += self.weights[b]*prevLayerOutput[p]
         output += self.bias
-        if self.isoutput:
-            output = sigmoid(output)
-        else:
-            output = relu(output)
+        output = chooseActivation(self.activationFunction,output)
         return output
-
-    #during backward propogation   
     
-    def Update(self,loss):
+    #backward propogation
+
+    def updateNueron(self,loss):
         for c in range(len(self.weights)):
-            self.weights[c] = self.weights[c] - (0.01)*(derivative(loss,self.weights[c]))
-        self.bias = self.bias - (0.01)*(derivative(loss,self.bias))
+            self.weights[c] = gradientDescent(self.weights[c],loss,0.01)
+            self.bias = gradientDescent(self.bias,loss,0.01)
 
-
-class Layers:
-    def __init__(self,units,layerIdentityNumber,outputLayer,inputLayer):
-        self.numberOfNuerons = units
+class Layer:
+    def __init__(self,units,identityNumber,prevLayerLength,activation):
+        self.identity = identityNumber
+        self.numOfNuerons = units
         self.Nuerons = []
-        self.identity = layerIdentityNumber
-        self.isoutputLayer = outputLayer
+        self.activation = activation
         self.LayerOutput = []
-        self.inputLayer = inputLayer
 
-    #initialising the nuerons
-    def Initialize(self,prevLayerLength):
-        for d in range(self.numberOfNuerons):
-            if self.inputLayer!=True:
-                self.Nuerons.append(Nueron(prevLayerLength,f'{self.identity}{d}',self.isoutputLayer))
-            else:
-                self.Nuerons.append(Nueron(0,f'0{d}',output=False))
-        print("The nuerons have been successfully initialised")
+        #initialising the nuerons
+        for d in range(units):
+            self.Nuerons.append(Nueron(prevLayerLength,self.activation,f'{self.identity}d'))
 
-    #passing values to the nuerons
+    def PassVals(self,prevLayerOutput):
+        for e in self.Nuerons:
+            self.LayerOutput.append(e.calculate(prevLayerOutput))
 
-    def PassVals(self,previousLayerOutput):
-        self.LayerOutput = []
-        if self.inputLayer!=True:
-            for e in range(self.numberOfNuerons):
-                self.LayerOutput.append(self.Nuerons[e].calculate(previousLayerOutput))
-        else:
-            self.LayerOutput = previousLayerOutput
+    def UpdateNuerons(self,loss):
+        for f in self.Nuerons:
+            f.updateNueron(loss)
+
+#Side Classes
+
+class InputLayer:
+    def __init__(self,NetworkInput):
+        self.LayerOutput = NetworkInput
+        self.numOfNuerons = 1

@@ -1,8 +1,5 @@
 ##All the metrics used are derived from this file
 import math as m
-#side functions
-def derivative(x,y):
-    return x/y
 #Activation functions
 
 def sigmoid(x):
@@ -57,3 +54,29 @@ def gradientDescent(weight,loss,learningRate):
     weight = weight - learningRate*(derivative(loss,weight))
     return weight
 
+#side functions
+def derivative(x,y):
+    return x/y
+def chooseActivation(name,x):
+    if name=='sigmoid':
+        return sigmoid(x)
+    elif name=='tanh':
+        return tanh(x)
+    elif name=='relu':
+        return relu(x)
+    elif name=='leakyrelu':
+        return leakyrelu(x)
+    else:
+        raise(RuntimeError("The specified activation function doesn't exist!!"))
+
+def chooseLoss(name,yTrue,yPred):
+    if name=='MSE':
+        return MSE(yTrue,yPred)
+    elif name=="MAE":
+        return MAE(yTrue,yPred)
+    elif name=='huberloss':
+        return huberLoss(yTrue,yPred)
+    elif name=="binaryCrossEntropy":
+        return binaryCrossEntropy(yTrue,yPred)
+    else:
+        raise(RuntimeError("The specified Loss function doesn't exist!!"))
