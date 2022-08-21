@@ -43,9 +43,9 @@ def huberLoss(yTrue,yPred,delta):
 
 def binaryCrossEntropy(yTrue,yPred):
     if yTrue==0:
-        loss = -1*(m.log(1-yPred))
+        loss = -1*(m.log(1-yPred + 0.0001))
     elif yTrue==1:
-        loss = -1*(m.log(yPred))
+        loss = -1*(m.log(yPred+0.0001))
     return loss
 
 #Optimizers

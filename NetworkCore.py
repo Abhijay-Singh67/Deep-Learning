@@ -40,16 +40,14 @@ class Layer:
             self.Nuerons.append(Nueron(prevLayerLength,self.activation,f'{self.identity}d'))
 
     def PassVals(self,prevLayerOutput):
-        for e in self.Nuerons:
-            self.LayerOutput.append(e.calculate(prevLayerOutput))
+        if self.identity==1:
+            for e in self.Nuerons:
+                self.LayerOutput.append(e.calculate(prevLayerOutput))
+        else:
+            self.LayerOutput = []
+            for e in self.Nuerons:
+                self.LayerOutput.append(e.calculate(prevLayerOutput))
 
     def UpdateNuerons(self,loss):
         for f in self.Nuerons:
             f.updateNueron(loss)
-
-#Side Classes
-
-class InputLayer:
-    def __init__(self,NetworkInput):
-        self.LayerOutput = NetworkInput
-        self.numOfNuerons = 1
