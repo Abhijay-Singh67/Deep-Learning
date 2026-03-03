@@ -1,7 +1,7 @@
 import numpy as np
-from helper import vec_relu
+from helper import relu
 class Linear:
-    def __init__(self,input_features:int,output_features:int, layerID:int, activation=vec_relu):
+    def __init__(self,input_features:int,output_features:int, layerID:int, activation=relu):
         self.__in = input_features
         self.__out = output_features
         self.__weights = np.random.randn(output_features,input_features)
@@ -23,4 +23,14 @@ class Linear:
     def backward(self):
         #To be implemented
         pass
+
+class Sequential:
+    def __init__(self,*layers):
+        self.__layers = list(layers)
+    
+    def forwardPass(self,x):
+        out = x
+        for i in self.__layers:
+            out = i.forward(out)
+        return out
         
