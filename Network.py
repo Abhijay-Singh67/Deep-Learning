@@ -7,6 +7,7 @@ print(input.shape)
 model = Sequential(
     Linear(1,1,lin)
 )
+model.summary()
 model.fit(input,output,50,5)
 print(model.predict(np.array([16]).reshape(-1,1)))
 model.dump()

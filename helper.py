@@ -32,3 +32,9 @@ def grad(y,pred,loss):
 
 def actigrad(x,act):
     return grads[act](x)
+
+def adam(prev_loss,loss,lr):
+    if (((prev_loss-loss)/prev_loss)<0.5):
+        return loss,lr/1000
+    return prev_loss,lr
+    
