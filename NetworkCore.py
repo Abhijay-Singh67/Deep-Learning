@@ -52,7 +52,6 @@ class Sequential:
 
     def fit(self,x,y,epochs:int,batch_size=1):
         N = x.shape[0]
-        prev_loss=-1
         for i in range(epochs):
             for j in range(0,N,batch_size):
                 x_batch = x[j:j+batch_size]
@@ -60,7 +59,6 @@ class Sequential:
                 pred = self.forwardPass(x_batch)
                 self.backProp(x_batch,y_batch,pred)
             predFull = self.forwardPass(x)
-            prev_loss,self.__lr=adam(prev_loss,self.__loss(y,predFull),self.__lr)
             print(f"Epoch {i+1}/{epochs} Training Loss:{self.__loss(y,predFull):.6f}")
 
     def backProp(self,x,y,pred):
@@ -72,7 +70,7 @@ class Sequential:
                 delta = grad(y,pred,self.__loss)*(actigrad(layer.current_output,layer.activation))
             else:
                 next_layer = self.__layers[i+1]
-                delta = (delta @ next_layer.weights.T) * actigrad(layer.current_output, layer.activation)
+                delta = (delta @ next_layer.weights().T) * actigrad(layer.current_output, layer.activation)
             if i == 0:
                 A_prev = x
             else:
