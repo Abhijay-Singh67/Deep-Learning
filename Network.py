@@ -1,10 +1,12 @@
 from NetworkCore import Linear,Sequential
-from helper import sigmoid
+from helper import lin
 import numpy as np
-input = np.array([[1,1,1],[2,2,2],[3,3,3]])
+input = np.array([1,2,3,4,5,6,7,8,9,10]).reshape(-1,1)
+output = np.array([2,4,6,8,10,12,14,16,18,20]).reshape(-1,1)
+print(input.shape)
 model = Sequential(
-    Linear(3,5,0),
-    Linear(5,1,1,sigmoid)
+    Linear(1,1,lin)
 )
-print(model.forwardPass(input).shape)
-model.fit(input,np.array([0.05,0.065,0.076]),2)
+model.fit(input,output,50,5)
+print(model.predict(np.array([16]).reshape(-1,1)))
+model.dump()
