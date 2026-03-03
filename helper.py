@@ -1,4 +1,3 @@
-import math as m
 import numpy as np
 
 def sigmoid(x):
@@ -9,3 +8,11 @@ def relu(x):
 
 def MSE(y, pred):
     return np.mean((y - pred) ** 2) / 2
+
+def MSEgrad(y,pred):
+    return (pred-y)/y.size
+
+losses = {MSE:MSEgrad}
+
+def grad(y,pred,loss):
+    return losses[loss](y,pred)
