@@ -253,34 +253,4 @@ If you want:
 
 ## 📜 License
 
-Add your preferred license here.
-
-Example:
-
-```
-MIT License
-```
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome!
-
-If you'd like to:
-- Improve performance
-- Add features
-- Fix bugs
-- Improve documentation
-
-Please open an issue or submit a pull request.
-
----
-
-## ⭐ Support
-
-If you found this project helpful, consider giving it a ⭐ on GitHub!
-
----
-
-# Built with ❤️ using NumPy
+MIT LICENSE
